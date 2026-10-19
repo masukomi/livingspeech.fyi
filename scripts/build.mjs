@@ -33,12 +33,6 @@ const assets = paths.filter((p) => p !== "sw.js" && p !== "index.html");
 
 const {version} = JSON.parse(readFileSync(join(root, "package.json"), "utf8"));
 
-const hash = createHash("sha256");
-for (const p of paths.filter((p) => p !== "sw.js" && p !== "version.js")) {
-    hash.update(p).update("\0").update(readFileSync(join(dist, p))).update("\0");
-}
-const build = hash.digest("hex").slice(0, 10);
-
 function stamp(file, replacements) {
     const path = join(dist, file);
     let text = readFileSync(path, "utf8");
@@ -49,7 +43,15 @@ function stamp(file, replacements) {
     writeFileSync(path, text);
 }
 
+// Stamp the version before hashing so a version bump alone produces a new build.
 stamp("version.js", [[/export const VERSION = .*;/, `export const VERSION = ${JSON.stringify(version)};`]]);
+
+const hash = createHash("sha256");
+for (const p of paths.filter((p) => p !== "sw.js")) {
+    hash.update(p).update("\0").update(readFileSync(join(dist, p))).update("\0");
+}
+const build = hash.digest("hex").slice(0, 10);
+
 stamp("sw.js", [
     [/const VERSION = .*;/, `const VERSION = ${JSON.stringify(build)};`],
     // index.html is cached as "./", the URL the app is opened at.
