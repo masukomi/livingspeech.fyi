@@ -1,0 +1,5 @@
+#!/bin/sh
+
+set -e
+npm run build
+gum confirm "Upload?" && rsync -avz dist/ masukomi.org:livingspeech.fyi/

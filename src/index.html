@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+    <title>LivingSpeech</title>
+    <meta name="description" content="A simple communication tool for people who can't speak. Type, and your device speaks it."/>
+    <meta name="theme-color" content="#f6f6f6" media="(prefers-color-scheme: light)"/>
+    <meta name="theme-color" content="#1e1e1e" media="(prefers-color-scheme: dark)"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-title" content="LivingSpeech"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+    <link rel="manifest" href="manifest.webmanifest"/>
+    <link rel="icon" href="icons/favicon.svg" type="image/svg+xml"/>
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png"/>
+    <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+<div id="panel">
+    <!-- Main view -->
+    <section id="main-view">
+        <header class="bar">
+            <span class="title">Speak</span>
+            <button id="open-settings" class="icon-btn" title="Settings" aria-label="Settings">
+                <svg viewBox="0 0 24 24"><path d="M10.3 4.3a1.7 1.7 0 0 1 3.4 0 1.7 1.7 0 0 0 2.6 1.1 1.7 1.7 0 0 1 2.3 2.3 1.7 1.7 0 0 0 1.1 2.6 1.7 1.7 0 0 1 0 3.4 1.7 1.7 0 0 0-1.1 2.6 1.7 1.7 0 0 1-2.3 2.3 1.7 1.7 0 0 0-2.6 1.1 1.7 1.7 0 0 1-3.4 0 1.7 1.7 0 0 0-2.6-1.1 1.7 1.7 0 0 1-2.3-2.3 1.7 1.7 0 0 0-1.1-2.6 1.7 1.7 0 0 1 0-3.4 1.7 1.7 0 0 0 1.1-2.6 1.7 1.7 0 0 1 2.3-2.3 1.7 1.7 0 0 0 2.6-1.1z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+        </header>
+
+        <div id="banner" class="banner" hidden></div>
+        <button id="update-banner" class="banner banner-action" hidden>A new version is ready. Tap to update.</button>
+
+        <textarea id="input" rows="1" placeholder="Type to speak" spellcheck="true" autocapitalize="sentences"
+                  enterkeyhint="send" aria-label="Text to speak"></textarea>
+        <div class="speak-row">
+            <p class="hint">
+                <span class="hint-keyboard">Return to speak · Shift+Return for a new line</span>
+                <span class="hint-touch">Tap Return to speak</span>
+            </p>
+            <!-- Play speaks the text box; while anything is speaking it becomes a stop button. -->
+            <button id="speak-toggle" class="icon-btn" title="Speak" aria-label="Speak" disabled>
+                <svg class="icon-play" viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z"/></svg>
+                <svg class="icon-stop" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>
+            </button>
+        </div>
+
+        <div id="recent-section">
+            <h2 class="section-label">Recent</h2>
+            <ul id="recent" class="recent"></ul>
+        </div>
+    </section>
+
+    <!-- Settings view -->
+    <section id="settings-view" hidden>
+        <header class="bar">
+            <button id="close-settings" class="icon-btn" title="Back" aria-label="Back">
+                <svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>
+            </button>
+            <span class="title">Settings</span>
+        </header>
+
+        <div class="field">
+            <label for="voice">Voice</label>
+            <div class="field-row">
+                <select id="voice"></select>
+                <button id="voice-info" class="icon-btn" title="Getting better voices" aria-label="How to get better voices">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v5.5"/><circle class="dot" cx="12" cy="7.6" r="0.6"/></svg>
+                </button>
+            </div>
+            <span class="field-hint">The voices your device has installed.</span>
+        </div>
+
+        <label class="field">Text size (%)
+            <input id="text-size" type="number" inputmode="numeric" min="50" step="10"/>
+            <span class="field-hint">100% follows your device's text size setting.</span>
+        </label>
+
+        <label class="field">Pronunciations
+            <textarea id="pronunciations" rows="4" spellcheck="false" autocomplete="off" autocapitalize="off"
+                      placeholder="Dachary -> dakahri"></textarea>
+            <span class="field-hint">One per line: a word, and how to pronounce it, separated by -&gt; or →</span>
+        </label>
+
+        <button id="preview" class="button">Preview voice</button>
+        <div id="settings-error" class="banner" hidden></div>
+
+        <footer class="settings-footer">
+            <span id="version"></span>
+            <button id="check-updates" class="link-btn">Check for updates</button>
+        </footer>
+    </section>
+</div>
+
+<dialog id="voice-info-dialog" aria-labelledby="voice-info-title">
+    <form method="dialog">
+        <h2 id="voice-info-title">Getting better voices</h2>
+        <p>LivingSpeech uses the voices installed on your device. The ones that come pre-installed are often
+            the most robotic. Higher quality voices are a free download.</p>
+
+        <h3>iPhone and iPad</h3>
+        <ol>
+            <li>Open the <b>Settings</b> app and go to <b>Accessibility › Spoken Content › Voices</b>.
+                On newer versions of iOS, Spoken Content may be called <b>Read &amp; Speak</b>.</li>
+            <li>Tap your language, then a voice.</li>
+            <li>Voices marked <b>Enhanced</b> or <b>Premium</b> sound the most natural. Tap the download
+                button next to one. Premium voices can be a few hundred megabytes, so use Wi‑Fi.</li>
+            <li>When the download finishes, close LivingSpeech completely (swipe it away in the app switcher)
+                and open it again. The new voice will be in this list.</li>
+        </ol>
+        <p class="note">Apple doesn't make Siri voices or Personal Voice available to web apps, so they
+            won't appear here.</p>
+
+        <h3>Android</h3>
+        <p>Voices come from your text-to-speech engine. Look in <b>Settings › Accessibility › Text-to-speech
+            output</b> (the location varies by phone), open the engine's settings, and install voice data for
+            your language.</p>
+
+        <div class="dialog-actions">
+            <button class="button" value="close" autofocus>Done</button>
+        </div>
+    </form>
+</dialog>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>

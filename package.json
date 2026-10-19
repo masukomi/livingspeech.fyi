@@ -1,0 +1,13 @@
+{
+  "name": "livingspeech-pwa",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "LivingSpeech as a progressive web app: type, and your device speaks it.",
+  "scripts": {
+    "dev": "python3 -m http.server --directory src 8000",
+    "build": "node scripts/build.mjs",
+    "preview": "node scripts/build.mjs && python3 -m http.server --directory dist 8000",
+    "test": "node --test test/"
+  }
+}
