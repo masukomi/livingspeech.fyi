@@ -1,3 +1,8 @@
+# v1.2.1
+
+## [fixed]
+- changed when version hashing happens
+
 # v1.2.0
 
 ## [change]
