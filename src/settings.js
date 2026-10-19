@@ -9,6 +9,7 @@ const MIN_TEXT_SIZE = 50;
 const voiceSel = document.getElementById("voice");
 const sizeInput = document.getElementById("text-size");
 const pronunciationsInput = document.getElementById("pronunciations");
+const quickButtonInputs = [1, 2, 3].map((n) => document.getElementById(`quick-button-${n}`));
 const errorBox = document.getElementById("settings-error");
 const infoDialog = document.getElementById("voice-info-dialog");
 const THEMES = ["light", "dark", "system"];
@@ -111,6 +112,9 @@ export function refreshSettings() {
     if (document.activeElement !== pronunciationsInput) {
         pronunciationsInput.value = s.pronunciations;
     }
+    quickButtonInputs.forEach((input, i) => {
+        if (document.activeElement !== input) input.value = s.quickButtons[i] ?? "";
+    });
     fillVoices();
 }
 
@@ -161,6 +165,19 @@ export function initSettings({onTextSize, onPreview}) {
         clearTimeout(pronunciationsSaveTimer);
         savePronunciations();
     });
+
+    let quickButtonsSaveTimer;
+    const saveQuickButtons = () => saveSettings({quickButtons: quickButtonInputs.map((input) => input.value)});
+    for (const input of quickButtonInputs) {
+        input.addEventListener("input", () => {
+            clearTimeout(quickButtonsSaveTimer);
+            quickButtonsSaveTimer = setTimeout(saveQuickButtons, 400);
+        });
+        input.addEventListener("change", () => {
+            clearTimeout(quickButtonsSaveTimer);
+            saveQuickButtons();
+        });
+    }
 
     document.getElementById("preview").addEventListener("click", onPreview);
 

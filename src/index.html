@@ -52,6 +52,9 @@
             </button>
         </div>
 
+        <!-- Quick buttons: one tap speaks the label. Labels are set in settings; blank ones are hidden. -->
+        <div id="quick-buttons" class="quick-buttons" role="group" aria-label="Quick phrases"></div>
+
         <div id="recent-section">
             <h2 class="section-label">Recent</h2>
             <ul id="recent" class="recent"></ul>
@@ -97,6 +100,16 @@
                       placeholder="Dachary -> dakahri"></textarea>
             <span class="field-hint">One per line: a word, and how to pronounce it, separated by -&gt; or →</span>
         </label>
+
+        <div class="field">
+            <span id="quick-buttons-label">Quick Buttons</span>
+            <div role="group" aria-labelledby="quick-buttons-label">
+                <input id="quick-button-1" type="text" autocomplete="off" aria-label="Button 1" placeholder="Button 1"/>
+                <input id="quick-button-2" type="text" autocomplete="off" aria-label="Button 2" placeholder="Button 2"/>
+                <input id="quick-button-3" type="text" autocomplete="off" aria-label="Button 3" placeholder="Button 3"/>
+            </div>
+            <span class="field-hint">Tapping a button speaks its text. Leave one blank to hide it.</span>
+        </div>
 
         <button id="preview" class="button">Preview voice</button>
         <div id="settings-error" class="banner" hidden></div>

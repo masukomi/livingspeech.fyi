@@ -11,6 +11,7 @@ const mainView = document.getElementById("main-view");
 const settingsView = document.getElementById("settings-view");
 const input = document.getElementById("input");
 const recentList = document.getElementById("recent");
+const quickButtons = document.getElementById("quick-buttons");
 const banner = document.getElementById("banner");
 const updateBanner = document.getElementById("update-banner");
 const speakToggle = document.getElementById("speak-toggle");
@@ -56,6 +57,23 @@ const UNSUPPORTED = "This browser can't speak text. Try Safari on iPhone or iPad
 function showBanner(msg) {
     banner.textContent = msg;
     banner.hidden = !msg;
+}
+
+// --- quick buttons ---
+
+// One button per non-blank label. They're a fixed part of the screen, so
+// speaking one doesn't add it to the recent list.
+function refreshQuickButtons() {
+    const labels = loadSettings().quickButtons.map((t) => t.trim()).filter(Boolean);
+    quickButtons.replaceChildren(...labels.map((label) => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "quick-button";
+        b.textContent = label;
+        b.addEventListener("click", () => speak(label, {remember: false}));
+        return b;
+    }));
+    quickButtons.hidden = labels.length === 0;
 }
 
 // --- recent ---
@@ -174,6 +192,7 @@ function showSettings(show) {
         refreshSettings();
     } else {
         refreshRecent(); // phrases may have been deleted in settings
+        refreshQuickButtons(); // labels may have changed in settings
         autosize();
     }
 }
@@ -231,6 +250,7 @@ function onUpdated() {
 
 document.getElementById("version").textContent = `Version ${VERSION}`;
 applyTextSize(loadSettings().textSize || DEFAULT_TEXT_SIZE);
+refreshQuickButtons();
 refreshRecent();
 if (!speech.supported) showBanner(UNSUPPORTED);
 // Don't pop up the keyboard on phones; it would cover the recent list.

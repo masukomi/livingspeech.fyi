@@ -35,11 +35,17 @@ function writeJSON(key, value) {
  * @property {number} textSize  the UI text size as a percentage of the browser default; 0 means 100
  * @property {string} pronunciations  one "word -> replacement" per line (see pronounce.js)
  * @property {"light"|"dark"|"system"} theme  the color scheme; "system" follows the device
+ * @property {string[]} quickButtons  labels of the quick buttons above the recent list; blank hides one
  */
+
+export const DEFAULT_QUICK_BUTTONS = ["No", "Maybe", "Yes"];
 
 /** @returns {Settings} */
 export function loadSettings() {
-    return {voiceURI: "", textSize: 0, pronunciations: "", theme: "system", ...readJSON(KEYS.settings, {})};
+    return {
+        voiceURI: "", textSize: 0, pronunciations: "", theme: "system", quickButtons: DEFAULT_QUICK_BUTTONS,
+        ...readJSON(KEYS.settings, {}),
+    };
 }
 
 /** @param {Partial<Settings>} changes */

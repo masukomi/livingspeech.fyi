@@ -2,6 +2,8 @@ import {beforeEach, test} from "node:test";
 import assert from "node:assert/strict";
 import {addRecent, clearRecent, listRecent, loadSettings, RECENT_WINDOW_MS, saveSettings} from "../src/store.js";
 
+const DEFAULTS = {voiceURI: "", textSize: 0, pronunciations: "", theme: "system", quickButtons: ["No", "Maybe", "Yes"]};
+
 beforeEach(() => {
     const data = new Map();
     globalThis.localStorage = {
@@ -45,15 +47,16 @@ test("recent: capped at 50", () => {
 });
 
 test("settings: defaults, then merged saves", () => {
-    assert.deepEqual(loadSettings(), {voiceURI: "", textSize: 0, pronunciations: "", theme: "system"});
+    assert.deepEqual(loadSettings(), DEFAULTS);
     saveSettings({textSize: 150});
     saveSettings({voiceURI: "x"});
-    assert.deepEqual(loadSettings(), {voiceURI: "x", textSize: 150, pronunciations: "", theme: "system"});
+    saveSettings({quickButtons: ["Hi", "", "Bye"]});
+    assert.deepEqual(loadSettings(), {...DEFAULTS, voiceURI: "x", textSize: 150, quickButtons: ["Hi", "", "Bye"]});
 });
 
 test("survives broken storage", () => {
     globalThis.localStorage = {getItem: () => { throw new Error("blocked"); }, setItem: () => { throw new Error("blocked"); }};
     addRecent("hi");
     assert.deepEqual(listRecent(), []);
-    assert.deepEqual(loadSettings(), {voiceURI: "", textSize: 0, pronunciations: "", theme: "system"});
+    assert.deepEqual(loadSettings(), DEFAULTS);
 });
