@@ -3,7 +3,7 @@
 // to update (see src/sw.js and src/update.js).
 
 import {createHash} from "node:crypto";
-import {cpSync, readdirSync, readFileSync, rmSync, writeFileSync} from "node:fs";
+import {chmodSync, cpSync, readdirSync, readFileSync, rmSync, writeFileSync} from "node:fs";
 import {join, relative, sep} from "node:path";
 import {fileURLToPath} from "node:url";
 
@@ -22,6 +22,10 @@ function files(dir) {
 
 rmSync(dist, {recursive: true, force: true});
 cpSync(src, dist, {recursive: true, filter: (p) => !skip(p.split(sep).at(-1))});
+
+// Editors sometimes save files owner-only; rsync would carry that to the
+// server, which then answers 403. Make every copied file world-readable.
+for (const p of files(dist)) chmodSync(p, 0o644);
 
 const paths = files(dist).map((p) => relative(dist, p).split(sep).join("/"));
 const assets = paths.filter((p) => p !== "sw.js" && p !== "index.html");
@@ -49,4 +53,4 @@ stamp("sw.js", [
     [/const ASSETS = .*;/, `const ASSETS = ${JSON.stringify(["./", ...assets])};`],
 ]);
 
-console.log(`Built dist/ — version ${version}, ${paths.length} files`);
+console.info(`Built dist/ — version ${version}, ${paths.length} files`);
