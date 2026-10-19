@@ -1,3 +1,8 @@
+# v1.1.0
+
+## [added]
+- quick buttons that speak a phrase in one tap
+
 # v1.0.1
 
 ## [fixed]
