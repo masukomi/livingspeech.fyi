@@ -11,13 +11,20 @@ const ASSETS = ["./"];
 const CACHE = `livingspeech-${VERSION}`;
 const DEV = VERSION === "dev";
 
+// Settles once this version's files are cached. Chrome checks whether a new
+// install works offline by fetching start_url through the worker with the
+// network cut off, and can do so while the worker is still installing, so
+// fetches wait for the precache rather than answer from an empty cache.
+let ready = Promise.resolve();
+
 self.addEventListener("install", (event) => {
-    event.waitUntil((async () => {
+    ready = (async () => {
         const cache = await caches.open(CACHE);
         // "reload" skips the HTTP cache, so we never cache stale copies.
         await cache.addAll(ASSETS.map((url) => new Request(url, {cache: "reload"})));
-        await self.skipWaiting(); // take over without waiting for every tab to close
-    })());
+    })();
+    // Take over without waiting for every tab to close.
+    event.waitUntil(ready.then(() => self.skipWaiting()));
 });
 
 self.addEventListener("activate", (event) => {
@@ -35,19 +42,25 @@ self.addEventListener("fetch", (event) => {
     event.respondWith(DEV ? networkFirst(request) : cacheFirst(request));
 });
 
-// The ASSETS entry a request is for, or null for anything else.
-// Any page in scope is the app itself.
+// The ASSETS entry a request is for, or null for anything else. Any page in
+// scope is the app itself, as is the scope root however it's requested:
+// Chrome fetches start_url directly when it checks whether the app installs.
 function assetKey(request) {
-    if (request.mode === "navigate") return "./";
     const scopePath = new URL(self.registration.scope).pathname;
     const path = new URL(request.url).pathname.slice(scopePath.length);
+    if (request.mode === "navigate" || path === "" || path === "index.html") return "./";
     return ASSETS.includes(path) ? path : null;
 }
 
+// The cache holds one copy of each file, so a response's Vary header (the
+// server sends Vary: User-Agent) must not stop a request from matching it.
+const MATCH = {ignoreSearch: true, ignoreVary: true};
+
 async function cacheFirst(request) {
+    await ready;
     const cache = await caches.open(CACHE);
     const key = assetKey(request);
-    const cached = await cache.match(key ?? request, {ignoreSearch: true});
+    const cached = await cache.match(key ?? request, MATCH);
     if (cached) return cached;
     // Not cached: the browser evicted it, or it's a file the app doesn't
     // ship. Fetch it, and keep a copy of anything that belongs to this
@@ -62,7 +75,7 @@ async function networkFirst(request) {
     try {
         return await fetch(request);
     } catch (e) {
-        const cached = await caches.match(request, {ignoreSearch: true});
+        const cached = await caches.match(request, MATCH);
         if (cached) return cached;
         throw e;
     }
