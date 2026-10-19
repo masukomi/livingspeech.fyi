@@ -23,7 +23,9 @@ your device.
 - **Adjustable size.** Text starts at your browser's (and on iPhone, your
   system's) text size. Settings has a Text size percentage on top of that,
   with no upper limit, and the whole app scales with it.
-- **Stop any time** with the stop button that appears while speaking.
+- **Play and stop.** The play button beside the text box speaks what you've
+  typed, and becomes a stop button while anything is being spoken.
+  Pressing Return mid-speech stops it and speaks the new text.
 - **Works offline** once installed, and **updates itself**: each time the
   app is opened or brought back to the foreground it checks for a new
   version, installs it in the background, and reloads (or, if you're in the
@@ -79,10 +81,19 @@ Host requirements:
 |---|---|
 | `src/index.html`, `src/style.css` | The two views (Speak and Settings) and the voice info dialog |
 | `src/app.js` | Main view: input, speaking, recent list, update handling |
-| `src/settings.js` | Settings view: voice list, font size, pronunciations |
+| `src/settings.js` | Settings view: voice list, text size, pronunciations |
 | `src/speech.js` | Wrapper around `speechSynthesis`; splits long text into sentence-sized pieces |
 | `src/pronounce.js` | Custom pronunciations (a port of the Mac app's `internal/pronounce`) |
 | `src/store.js` | Settings and recent phrases in `localStorage` |
 | `src/update.js`, `src/sw.js` | Offline caching and update-on-launch |
 | `scripts/build.mjs` | Copies `src/` to `dist/` and stamps the version |
 | `scripts/icon-*.svg` | Sources for the PNG icons in `src/icons/` |
+
+## License
+
+Copyright ©2026 Kay Rhodes
+
+LivingSpeech is free software: you can redistribute it and/or modify it
+under the terms of the [GNU General Public License](LICENSE.txt) as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.

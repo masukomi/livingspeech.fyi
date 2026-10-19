@@ -4,6 +4,8 @@
   "version": "1.0.0",
   "type": "module",
   "description": "LivingSpeech as a progressive web app: type, and your device speaks it.",
+  "license": "GPL-3.0-or-later",
+  "author": "Kay Rhodes",
   "scripts": {
     "dev": "python3 -m http.server --directory src 8000",
     "build": "node scripts/build.mjs",
