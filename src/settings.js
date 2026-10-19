@@ -11,6 +11,26 @@ const sizeInput = document.getElementById("text-size");
 const pronunciationsInput = document.getElementById("pronunciations");
 const errorBox = document.getElementById("settings-error");
 const infoDialog = document.getElementById("voice-info-dialog");
+const THEMES = ["light", "dark", "system"];
+const themeButtons = THEMES.map((t) => document.getElementById(`theme-${t}`));
+
+/**
+ * Force a color scheme, or hand control back to the system preference.
+ * index.html applies the saved choice before the first paint the same way.
+ */
+function applyTheme(theme) {
+    if (!THEMES.includes(theme)) theme = "system";
+    if (theme === "system") delete document.documentElement.dataset.theme;
+    else document.documentElement.dataset.theme = theme;
+    themeButtons.forEach((b) => b.setAttribute("aria-pressed", String(b.id === `theme-${theme}`)));
+    // Tint the browser chrome to match: when a scheme is forced, only its meta
+    // stays active. With "system", each meta's own media query applies again.
+    for (const m of document.querySelectorAll("meta[name=theme-color]")) {
+        m.dataset.media ??= m.media;
+        if (theme === "system") m.media = m.dataset.media;
+        else m.media = m.dataset.media.includes(theme) ? "" : "not all";
+    }
+}
 
 export function showError(msg) {
     errorBox.textContent = msg;
@@ -87,6 +107,7 @@ export function refreshSettings() {
     showError("");
     const s = loadSettings();
     sizeInput.value = String(s.textSize || DEFAULT_TEXT_SIZE);
+    applyTheme(s.theme);
     if (document.activeElement !== pronunciationsInput) {
         pronunciationsInput.value = s.pronunciations;
     }
@@ -107,6 +128,12 @@ export function initSettings({onTextSize, onPreview}) {
     infoDialog.addEventListener("click", (e) => {
         if (e.target === infoDialog) infoDialog.close();
     });
+
+    applyTheme(loadSettings().theme);
+    themeButtons.forEach((b, i) => b.addEventListener("click", () => {
+        saveSettings({theme: THEMES[i]});
+        applyTheme(THEMES[i]);
+    }));
 
     let sizeSaveTimer;
     sizeInput.addEventListener("input", () => {

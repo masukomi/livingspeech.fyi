@@ -11,39 +11,97 @@
     }
 }
 
+/* Color schemes, after the Duckquill theme (https://codeberg.org/daudix/duckquill):
+   the page background is the accent tinted toward white or black, and text is
+   a muted scale over it. `data-theme` on <html> forces one scheme (set by the
+   Color scheme setting); without it the system preference decides. */
+
+/* Light */
 :root {
-    color-scheme: light dark;
-    --text: rgba(0, 0, 0, 0.88);
-    --text-secondary: rgba(0, 0, 0, 0.55);
-    --text-muted: rgba(0, 0, 0, 0.42);
-    --field: #fff;
-    --field-border: rgba(0, 0, 0, 0.14);
-    --hover: rgba(0, 0, 0, 0.06);
-    --accent: #0a84ff;
-    --danger: #d70015;
-    --warn-bg: rgba(255, 159, 10, 0.16);
-    --warn-text: #8a5300;
-    --info-bg: rgba(10, 132, 255, 0.12);
-    --panel-bg: #f6f6f6;
-    --dialog-bg: #fff;
-    --close-bg: #ececec;
+    color-scheme: light;
+    --accent-color: #ff7800;
+    --accent-color-alpha: rgba(255, 120, 0, 0.1);
+    --bg-color: color-mix(in srgb, var(--accent-color) 20%, white);
+    --fg-color: rgba(0, 0, 0, 0.8);
+    --fg-contrast: #fff;
+    --fg-muted-1: rgba(0, 0, 0, 0.05);
+    --fg-muted-2: rgba(0, 0, 0, 0.1);
+    --fg-muted-3: rgba(0, 0, 0, 0.2);
+    --fg-muted-4: rgba(0, 0, 0, 0.5);
+    --fg-muted-5: rgba(0, 0, 0, 0.6);
+    --glass-bg: rgba(242, 242, 242, 0.7);
+    --field-bg: #fff;
+    --red-fg: #e01b24;
+    --yellow-fg: #9c6e03;
+    --yellow-bg: rgba(156, 110, 3, 0.1);
+    --blue-bg: rgba(53, 132, 228, 0.1);
+    --edge-highlight: inset 0 0.0625rem 0 rgba(255, 255, 255, 0.1);
 }
 
+/* Dark */
+[data-theme="dark"] {
+    color-scheme: dark;
+    --accent-color: #ffa348;
+    --accent-color-alpha: rgba(255, 163, 72, 0.1);
+    --bg-color: color-mix(in srgb, var(--accent-color) 10%, black);
+    --fg-color: #fff;
+    --fg-contrast: rgba(0, 0, 0, 0.8);
+    --fg-muted-1: rgba(255, 255, 255, 0.05);
+    --fg-muted-2: rgba(255, 255, 255, 0.1);
+    --fg-muted-3: rgba(255, 255, 255, 0.2);
+    --fg-muted-4: rgba(255, 255, 255, 0.5);
+    --fg-muted-5: rgba(255, 255, 255, 0.6);
+    --glass-bg: rgba(25, 25, 25, 0.7);
+    --field-bg: rgba(0, 0, 0, 0.3);
+    --red-fg: #f66151;
+    --yellow-fg: #f8e45c;
+    --yellow-bg: rgba(248, 228, 92, 0.1);
+    --blue-bg: rgba(153, 193, 241, 0.1);
+}
 @media (prefers-color-scheme: dark) {
-    :root {
-        --text: rgba(255, 255, 255, 0.9);
-        --text-secondary: rgba(255, 255, 255, 0.6);
-        --text-muted: rgba(255, 255, 255, 0.42);
-        --field: rgba(0, 0, 0, 0.3);
-        --field-border: rgba(255, 255, 255, 0.16);
-        --hover: rgba(255, 255, 255, 0.08);
-        --warn-bg: rgba(255, 159, 10, 0.2);
-        --warn-text: #ffc266;
-        --info-bg: rgba(10, 132, 255, 0.22);
-        --panel-bg: #1e1e1e;
-        --dialog-bg: #2a2a2a;
-        --close-bg: #444;
+    :root:not([data-theme="light"]) {
+        color-scheme: dark;
+        --accent-color: #ffa348;
+        --accent-color-alpha: rgba(255, 163, 72, 0.1);
+        --bg-color: color-mix(in srgb, var(--accent-color) 10%, black);
+        --fg-color: #fff;
+        --fg-contrast: rgba(0, 0, 0, 0.8);
+        --fg-muted-1: rgba(255, 255, 255, 0.05);
+        --fg-muted-2: rgba(255, 255, 255, 0.1);
+        --fg-muted-3: rgba(255, 255, 255, 0.2);
+        --fg-muted-4: rgba(255, 255, 255, 0.5);
+        --fg-muted-5: rgba(255, 255, 255, 0.6);
+        --glass-bg: rgba(25, 25, 25, 0.7);
+        --field-bg: rgba(0, 0, 0, 0.3);
+        --red-fg: #f66151;
+        --yellow-fg: #f8e45c;
+        --yellow-bg: rgba(248, 228, 92, 0.1);
+        --blue-bg: rgba(153, 193, 241, 0.1);
     }
+}
+
+/* The names the rest of the stylesheet uses, mapped onto the scheme above. */
+:root {
+    --text: var(--fg-color);
+    --text-secondary: var(--fg-muted-5);
+    --text-muted: var(--fg-muted-4);
+    --field: var(--field-bg);
+    --field-border: var(--fg-muted-2);
+    --hover: var(--fg-muted-1);
+    --accent: var(--accent-color);
+    --danger: var(--red-fg);
+    --warn-bg: var(--yellow-bg);
+    --warn-text: var(--yellow-fg);
+    --info-bg: var(--blue-bg);
+    --panel-bg: var(--bg-color);
+    --dialog-bg: var(--bg-color);
+    --close-bg: var(--fg-muted-2);
+    --rounded-corner: 0.75rem;
+    --rounded-corner-small: 0.5rem;
+    /* Duckquill's theme-switcher icons, used as masks so they take the text color. */
+    --icon-theme-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Cpath d='M.918 8.004a7.072 7.072 0 0 0 14.102.793 1.01 1.01 0 0 0-.457-.957 1 1 0 0 0-1.063-.004 3.9 3.9 0 0 1-2.031.578 3.89 3.89 0 0 1-3.883-3.883c0-.715.203-1.422.578-2.031a1 1 0 0 0-.004-1.062c-.207-.32-.578-.5-.957-.458A7.07 7.07 0 0 0 .918 8.004M5.586 4.53a5.877 5.877 0 0 0 8.965 5.004l-1.52-.96a5.09 5.09 0 0 1-5.035 4.507 5.09 5.09 0 0 1-5.078-5.078 5.09 5.09 0 0 1 4.508-5.035l-.961-1.52a5.9 5.9 0 0 0-.88 3.082m0 0'/%3E%3C/svg%3E");
+    --icon-theme-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Cpath d='M8.004-.008a1 1 0 0 0-1 1v1a1 1 0 1 0 2 0v-1c0-.554-.445-1-1-1M3.053 2.035a1 1 0 0 0-.26.035.994.994 0 0 0-.45 1.672l.708.707a1 1 0 1 0 1.414-1.414l-.707-.707a1 1 0 0 0-.705-.293m9.9.012a1 1 0 0 0-.707.293l-.707.707a1 1 0 1 0 1.414 1.414l.707-.707a1 1 0 0 0-.707-1.707M8 4C5.785 4 4 5.785 4 8s1.785 4 4 4 4-1.785 4-4-1.785-4-4-4m0 2c1.098 0 2 .902 2 2s-.902 2-2 2-2-.902-2-2 .902-2 2-2m-7.004.984a1 1 0 1 0 0 2h1a1 1 0 1 0 0-2zM14 7c-.55 0-1 .45-1 1s.45 1 1 1h1c.55 0 1-.45 1-1s-.45-1-1-1zM3.748 11.234a1 1 0 0 0-.705.293l-.711.707a1.007 1.007 0 0 0 0 1.414c.39.391 1.027.391 1.418 0l.707-.707a1 1 0 0 0-.709-1.707m8.49.006q-.131 0-.261.033a1.01 1.01 0 0 0-.707.711 1 1 0 0 0 .261.965l.707.707a.995.995 0 0 0 1.672-.445 1 1 0 0 0-.258-.969l-.707-.707a1 1 0 0 0-.707-.295m-4.246 1.756c-.554 0-1 .445-1 1v1a1 1 0 1 0 2 0v-1a1 1 0 0 0-1-1'/%3E%3C/svg%3E");
+    --icon-theme-system: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Cpath d='M8 0C3.594 0 0 3.594 0 8s3.594 8 8 8 8-3.594 8-8-3.594-8-8-8m0 1.941c3.36 0 6.059 2.7 6.059 6.059s-2.7 6.059-6.059 6.059zm0 0'/%3E%3C/svg%3E");
 }
 
 * { box-sizing: border-box; }
@@ -141,7 +199,7 @@ html, body {
     -webkit-user-select: text;
     user-select: text;
 }
-#input:focus { border-color: var(--accent); box-shadow: 0 0 0 0.2rem rgba(10, 132, 255, 0.25); }
+#input:focus { border-color: var(--accent); box-shadow: 0 0 0 0.2rem var(--accent-color-alpha); }
 #input::placeholder { color: var(--text-muted); }
 
 .speak-row {
@@ -274,6 +332,54 @@ html, body {
     color: var(--text-muted);
 }
 
+/* Color scheme: a pill of three round buttons, as in Duckquill's nav. */
+#theme-label { display: block; }
+.theme-switcher {
+    display: inline-flex;
+    gap: 0.25rem;
+    margin-top: 0.3rem;
+    padding: 0.25rem;
+    border-radius: 999px;
+    background: var(--fg-muted-1);
+    box-shadow: var(--edge-highlight);
+}
+.theme-switcher button {
+    appearance: none;
+    border: 0;
+    width: 2.75rem;
+    height: 2.75rem;
+    padding: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--fg-muted-4);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s;
+}
+.theme-switcher button:active { transform: scale(0.9); }
+.theme-switcher button[aria-pressed="true"] {
+    box-shadow: var(--edge-highlight);
+    background: var(--accent-color-alpha);
+    color: var(--accent-color);
+}
+@media (hover: hover) {
+    .theme-switcher button:hover { background: var(--fg-muted-2); color: var(--fg-muted-5); }
+    .theme-switcher button[aria-pressed="true"]:hover { background: var(--accent-color); color: var(--fg-contrast); }
+}
+.theme-switcher .icon {
+    display: inline-block;
+    width: 1.25rem;
+    height: 1.25rem;
+    background: currentColor;
+    -webkit-mask: var(--icon) center / contain no-repeat;
+    mask: var(--icon) center / contain no-repeat;
+}
+#theme-light .icon { --icon: var(--icon-theme-light); }
+#theme-dark .icon { --icon: var(--icon-theme-dark); }
+#theme-system .icon { --icon: var(--icon-theme-system); }
+
 .button {
     display: block;
     width: 100%;
@@ -281,7 +387,7 @@ html, body {
     padding: 0.6rem 0.75rem;
     font: inherit;
     font-size: 1rem;
-    color: #fff;
+    color: var(--fg-contrast);
     background: var(--accent);
     border: 0;
     border-radius: 0.6rem;
@@ -289,8 +395,9 @@ html, body {
 }
 .button:active { opacity: 0.8; }
 
-/* Destructive actions. This red keeps white text above 4.5:1 contrast. */
+/* Destructive actions. */
 .button-danger {
+    color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;

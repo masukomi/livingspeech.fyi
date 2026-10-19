@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
     <title>LivingSpeech</title>
     <meta name="description" content="A simple communication tool for people who can't speak. Type, and your device speaks it."/>
-    <meta name="theme-color" content="#f6f6f6" media="(prefers-color-scheme: light)"/>
-    <meta name="theme-color" content="#1e1e1e" media="(prefers-color-scheme: dark)"/>
+    <!-- The page backgrounds from style.css; settings.js overrides these when a scheme is forced. -->
+    <meta name="theme-color" content="#ffe4cc" media="(prefers-color-scheme: light)"/>
+    <meta name="theme-color" content="#1a1007" media="(prefers-color-scheme: dark)"/>
     <meta name="apple-mobile-web-app-capable" content="yes"/>
     <meta name="mobile-web-app-capable" content="yes"/>
     <meta name="apple-mobile-web-app-title" content="LivingSpeech"/>
@@ -15,6 +16,13 @@
     <link rel="icon" href="icons/favicon.svg" type="image/svg+xml"/>
     <link rel="apple-touch-icon" href="icons/apple-touch-icon.png"/>
     <link rel="stylesheet" href="style.css"/>
+    <!-- Apply the saved color scheme before the first paint, so the page doesn't flash. -->
+    <script>
+        try {
+            var theme = JSON.parse(localStorage.getItem("livingspeech.settings") || "{}").theme;
+            if (theme === "light" || theme === "dark") document.documentElement.dataset.theme = theme;
+        } catch (e) {}
+    </script>
 </head>
 <body>
 <div id="panel">
@@ -74,6 +82,15 @@
             <input id="text-size" type="number" inputmode="numeric" min="50" step="10"/>
             <span class="field-hint">100% follows your device's text size setting.</span>
         </label>
+
+        <div class="field">
+            <span id="theme-label">Color scheme</span>
+            <div class="theme-switcher" role="group" aria-labelledby="theme-label">
+                <button type="button" id="theme-light" title="Light" aria-label="Light" aria-pressed="false"><i class="icon"></i></button>
+                <button type="button" id="theme-dark" title="Dark" aria-label="Dark" aria-pressed="false"><i class="icon"></i></button>
+                <button type="button" id="theme-system" title="Follow the system" aria-label="Follow the system" aria-pressed="false"><i class="icon"></i></button>
+            </div>
+        </div>
 
         <label class="field">Pronunciations
             <textarea id="pronunciations" rows="4" spellcheck="false" autocomplete="off" autocapitalize="off"

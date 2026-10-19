@@ -34,11 +34,12 @@ function writeJSON(key, value) {
  * @property {string} voiceURI  the chosen voice's voiceURI; empty means the system default
  * @property {number} textSize  the UI text size as a percentage of the browser default; 0 means 100
  * @property {string} pronunciations  one "word -> replacement" per line (see pronounce.js)
+ * @property {"light"|"dark"|"system"} theme  the color scheme; "system" follows the device
  */
 
 /** @returns {Settings} */
 export function loadSettings() {
-    return {voiceURI: "", textSize: 0, pronunciations: "", ...readJSON(KEYS.settings, {})};
+    return {voiceURI: "", textSize: 0, pronunciations: "", theme: "system", ...readJSON(KEYS.settings, {})};
 }
 
 /** @param {Partial<Settings>} changes */

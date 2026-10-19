@@ -45,15 +45,15 @@ test("recent: capped at 50", () => {
 });
 
 test("settings: defaults, then merged saves", () => {
-    assert.deepEqual(loadSettings(), {voiceURI: "", textSize: 0, pronunciations: ""});
+    assert.deepEqual(loadSettings(), {voiceURI: "", textSize: 0, pronunciations: "", theme: "system"});
     saveSettings({textSize: 150});
     saveSettings({voiceURI: "x"});
-    assert.deepEqual(loadSettings(), {voiceURI: "x", textSize: 150, pronunciations: ""});
+    assert.deepEqual(loadSettings(), {voiceURI: "x", textSize: 150, pronunciations: "", theme: "system"});
 });
 
 test("survives broken storage", () => {
     globalThis.localStorage = {getItem: () => { throw new Error("blocked"); }, setItem: () => { throw new Error("blocked"); }};
     addRecent("hi");
     assert.deepEqual(listRecent(), []);
-    assert.deepEqual(loadSettings(), {voiceURI: "", textSize: 0, pronunciations: ""});
+    assert.deepEqual(loadSettings(), {voiceURI: "", textSize: 0, pronunciations: "", theme: "system"});
 });
