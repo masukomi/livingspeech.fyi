@@ -1,5 +1,7 @@
 #!/bin/sh
 
 set -e
+DESTINATION=masukomi.org:livingspeech.fyi/
+
 npm run build
-gum confirm "Upload?" && rsync -avz dist/ masukomi.org:livingspeech.fyi/
+gum confirm "Upload to $DESTINATION"? && rsync -avz dist/ $DESTINATION

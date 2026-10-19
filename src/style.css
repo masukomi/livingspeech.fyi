@@ -66,6 +66,14 @@ html, body {
         max(min(0.33rem, 8px), env(safe-area-inset-right))
         max(min(0.33rem, 8px), env(safe-area-inset-bottom))
         max(min(0.33rem, 8px), env(safe-area-inset-left));
+    /* At least as tall as the screen, so the page footer starts out at the
+       bottom edge and long content pushes it further down. svh is the
+       viewport with the browser's toolbars showing, so the footer is never
+       hidden behind them; vh is the fallback for older browsers. */
+    min-height: 100vh;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
 }
 
 [hidden] { display: none !important; }
@@ -295,6 +303,36 @@ html, body {
     font-size: 0.85rem;
     padding: 0.5rem 0;
     cursor: pointer;
+}
+
+/* A line across the bottom of the page, on both views. */
+.page-footer {
+    margin-top: auto;
+    padding-top: 1.5rem;
+    text-align: center;
+    font-size: 0.85rem;
+}
+.page-footer a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem; /* a comfortable tap target */
+    color: var(--text-secondary);
+    text-decoration: none;
+}
+.page-footer a:active { color: var(--accent); }
+.page-footer svg {
+    flex: none;
+    width: 1.2em;
+    height: 1.2em;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+@media (hover: hover) {
+    .page-footer a:hover { color: var(--accent); text-decoration: underline; }
 }
 
 dialog {
