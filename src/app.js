@@ -191,6 +191,19 @@ document.addEventListener("visibilitychange", () => {
 });
 window.visualViewport?.addEventListener("resize", autosize);
 
+// --- add to home screen ---
+
+const installBtn = document.getElementById("install-info");
+const installDialog = document.getElementById("install-dialog");
+// Already running from the home screen: the instructions have done their job.
+const installed = matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+installBtn.hidden = installed;
+installBtn.addEventListener("click", () => installDialog.showModal());
+// A tap on the backdrop closes the dialog too.
+installDialog.addEventListener("click", (e) => {
+    if (e.target === installDialog) installDialog.close();
+});
+
 // --- updates ---
 
 const checkBtn = document.getElementById("check-updates");

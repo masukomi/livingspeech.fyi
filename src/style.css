@@ -26,6 +26,7 @@
     --info-bg: rgba(10, 132, 255, 0.12);
     --panel-bg: #f6f6f6;
     --dialog-bg: #fff;
+    --close-bg: #ececec;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -41,6 +42,7 @@
         --info-bg: rgba(10, 132, 255, 0.22);
         --panel-bg: #1e1e1e;
         --dialog-bg: #2a2a2a;
+        --close-bg: #444;
     }
 }
 
@@ -330,7 +332,11 @@ html, body {
 .page-footer {
     margin-top: auto;
     padding-top: 1.5rem;
-    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.25rem;
     font-size: 0.85rem;
 }
 .page-footer a {
@@ -342,6 +348,9 @@ html, body {
     text-decoration: none;
 }
 .page-footer a:active { color: var(--accent); }
+/* Buttons don't inherit font size, which the em-sized icon below relies on. */
+.page-footer button { font-size: inherit; }
+#install-info svg { width: 1.6em; height: 1.6em; }
 .page-footer svg {
     flex: none;
     width: 1.2em;
@@ -378,3 +387,46 @@ dialog ol { margin: 0 0 0.5rem; padding-left: 1.3rem; }
 dialog li { margin-bottom: 0.35rem; }
 dialog .note { color: var(--text-secondary); font-size: 0.875rem; }
 .dialog-actions { margin-top: 0.75rem; }
+
+/* A large, thumb-friendly close button in the top right corner. Sticky, so
+   it stays in reach when a long dialog scrolls. */
+.dialog-close {
+    position: sticky;
+    top: 0;
+    float: right;
+    margin: -0.6rem -0.85rem 0.25rem 0.5rem;
+    width: 3.25rem;
+    height: 3.25rem;
+    padding: 0.75rem;
+    border: 0;
+    border-radius: 50%;
+    /* Opaque, since dialog text scrolls underneath it. */
+    background: var(--close-bg);
+    box-shadow: 0 0.1rem 0.4rem rgba(0, 0, 0, 0.2);
+    color: var(--text);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.dialog-close:active { filter: brightness(0.9); }
+.dialog-close svg {
+    width: 100%;
+    height: 100%;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+}
+
+/* Small pictures of on-screen buttons, inline with the instructions. */
+.inline-icon {
+    width: 1.15em;
+    height: 1.15em;
+    vertical-align: -0.2em;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}

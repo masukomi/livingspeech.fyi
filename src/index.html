@@ -96,6 +96,9 @@
     </section>
 
     <footer class="page-footer">
+        <button id="install-info" class="icon-btn" title="Add to your home screen" aria-label="How to add LivingSpeech to your home screen">
+            <svg viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>
+        </button>
         <a href="https://github.com/masukomi/livingspeech.fyi" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/></svg>
             Details &amp; Source Code
@@ -130,6 +133,37 @@
         <div class="dialog-actions">
             <button class="button" value="close" autofocus>Done</button>
         </div>
+    </form>
+</dialog>
+
+<dialog id="install-dialog" aria-labelledby="install-title">
+    <form method="dialog">
+        <button class="dialog-close" value="close" aria-label="Close">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+        <h2 id="install-title">Add to your home screen</h2>
+        <p>LivingSpeech works like an app once it's on your home screen: it opens full screen, works
+            without an internet connection, and keeps itself up to date.</p>
+
+        <h3>iPhone and iPad</h3>
+        <ol>
+            <li>Open <b>LivingSpeech.fyi</b> in Safari.</li>
+            <li>Tap the <b>Share</b> button
+                <svg class="inline-icon" viewBox="0 0 24 24" role="img" aria-label="(a square with an arrow pointing up)"><path d="M12 3v12M8 7l4-4 4 4M7 11H5v10h14V11h-2"/></svg>.
+                In Safari it's at the bottom of the screen, or at the top on iPad.
+                You may need to tap <b>⋯</b> first.</li>
+            <li>Scroll down and tap <b>Add to Home Screen</b>.</li>
+            <li>Tap <b>Add</b>.</li>
+        </ol>
+        <p class="note">On iOS 16.4 and later, Chrome and Edge can do this too, from their own Share button.</p>
+
+        <h3>Android</h3>
+        <ol>
+            <li>Open <b>LivingSpeech.fyi</b> in Chrome.</li>
+            <li>Tap the menu button <b>⋮</b> in the top right corner.</li>
+            <li>Tap <b>Add to Home screen</b> or <b>Install app</b>, then <b>Install</b>.</li>
+        </ol>
+        <p class="note">Other browsers, like Samsung Internet and Firefox, have a similar option in their menu.</p>
     </form>
 </dialog>
 
