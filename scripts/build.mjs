@@ -1,4 +1,5 @@
-// Copies src/ to dist/ and stamps a version: a hash of every file's contents.
+// Copies src/ to dist/ and stamps two things: the version from package.json
+// (shown on the settings page) and a build hash of every file's contents.
 // Deploying a build with a new hash is what tells installed copies of the app
 // to update (see src/sw.js and src/update.js).
 
@@ -30,11 +31,13 @@ for (const p of files(dist)) chmodSync(p, 0o644);
 const paths = files(dist).map((p) => relative(dist, p).split(sep).join("/"));
 const assets = paths.filter((p) => p !== "sw.js" && p !== "index.html");
 
+const {version} = JSON.parse(readFileSync(join(root, "package.json"), "utf8"));
+
 const hash = createHash("sha256");
 for (const p of paths.filter((p) => p !== "sw.js" && p !== "version.js")) {
     hash.update(p).update("\0").update(readFileSync(join(dist, p))).update("\0");
 }
-const version = hash.digest("hex").slice(0, 10);
+const build = hash.digest("hex").slice(0, 10);
 
 function stamp(file, replacements) {
     const path = join(dist, file);
@@ -48,9 +51,9 @@ function stamp(file, replacements) {
 
 stamp("version.js", [[/export const VERSION = .*;/, `export const VERSION = ${JSON.stringify(version)};`]]);
 stamp("sw.js", [
-    [/const VERSION = .*;/, `const VERSION = ${JSON.stringify(version)};`],
+    [/const VERSION = .*;/, `const VERSION = ${JSON.stringify(build)};`],
     // index.html is cached as "./", the URL the app is opened at.
     [/const ASSETS = .*;/, `const ASSETS = ${JSON.stringify(["./", ...assets])};`],
 ]);
 
-console.info(`Built dist/ — version ${version}, ${paths.length} files`);
+console.info(`Built dist/ — version ${version}, build ${build}, ${paths.length} files`);

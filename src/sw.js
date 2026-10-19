@@ -1,6 +1,6 @@
 // Serves LivingSpeech from a cache so it opens instantly and works offline.
 //
-// scripts/build.mjs replaces VERSION with a hash of the app's files and fills
+// scripts/build.mjs replaces VERSION with a build hash of the app's files and fills
 // in ASSETS. Any change to the app therefore changes this file, which is how
 // the browser notices there's a new version: it installs this worker in the
 // background, which caches the new files and takes over from the old one.
