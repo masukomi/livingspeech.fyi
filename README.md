@@ -8,6 +8,12 @@ It speaks with the text-to-speech voices built into your phone, tablet,
 or computer, using the browser's Web Speech API. Nothing you type leaves
 your device.
 
+## ℹ️ Everything Runs Locally 🎉
+Everything you type is private. 
+
+<https://LivingSpeech.fyi> has no server side code.  
+The text you type is never sent to the server. 
+
 ## Features
 
 - **Type naturally.** Return speaks the text and clears the box. On a
