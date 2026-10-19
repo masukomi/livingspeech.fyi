@@ -1,3 +1,8 @@
+# v1.2.0
+
+## [change]
+- changed the version display in settings
+
 # v1.1.0
 
 ## [added]
