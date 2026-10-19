@@ -35,11 +35,26 @@ self.addEventListener("fetch", (event) => {
     event.respondWith(DEV ? networkFirst(request) : cacheFirst(request));
 });
 
+// The ASSETS entry a request is for, or null for anything else.
+// Any page in scope is the app itself.
+function assetKey(request) {
+    if (request.mode === "navigate") return "./";
+    const scopePath = new URL(self.registration.scope).pathname;
+    const path = new URL(request.url).pathname.slice(scopePath.length);
+    return ASSETS.includes(path) ? path : null;
+}
+
 async function cacheFirst(request) {
     const cache = await caches.open(CACHE);
-    // Any page in scope is the app itself.
-    const key = request.mode === "navigate" ? "./" : request;
-    return (await cache.match(key, {ignoreSearch: true})) ?? fetch(request);
+    const key = assetKey(request);
+    const cached = await cache.match(key ?? request, {ignoreSearch: true});
+    if (cached) return cached;
+    // Not cached: the browser evicted it, or it's a file the app doesn't
+    // ship. Fetch it, and keep a copy of anything that belongs to this
+    // version so a single eviction doesn't leave the app broken offline.
+    const response = await fetch(request);
+    if (key && response.ok && !response.redirected) await cache.put(key, response.clone());
+    return response;
 }
 
 // During development, always fetch fresh files, falling back to the cache offline.
