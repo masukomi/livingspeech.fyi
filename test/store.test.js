@@ -1,12 +1,13 @@
 import {beforeEach, test} from "node:test";
 import assert from "node:assert/strict";
-import {addRecent, listRecent, loadSettings, RECENT_WINDOW_MS, saveSettings} from "../src/store.js";
+import {addRecent, clearRecent, listRecent, loadSettings, RECENT_WINDOW_MS, saveSettings} from "../src/store.js";
 
 beforeEach(() => {
     const data = new Map();
     globalThis.localStorage = {
         getItem: (k) => (data.has(k) ? data.get(k) : null),
         setItem: (k, v) => data.set(k, String(v)),
+        removeItem: (k) => data.delete(k),
     };
 });
 
@@ -15,6 +16,14 @@ test("recent: newest first, duplicates move to the top", () => {
     addRecent("two", 2000);
     addRecent(" one ", 3000);
     assert.deepEqual(listRecent(3000).map((e) => e.text), ["one", "two"]);
+});
+
+test("recent: clearRecent removes everything", () => {
+    addRecent("one", 1000);
+    addRecent("two", 2000);
+    clearRecent();
+    assert.deepEqual(listRecent(2000), []);
+    assert.equal(globalThis.localStorage.getItem("livingspeech.recent"), null);
 });
 
 test("recent: ignores blank text", () => {

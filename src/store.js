@@ -67,6 +67,15 @@ export function addRecent(text, now = Date.now()) {
     writeJSON(KEYS.recent, prune([{text, at: now}, ...others], now));
 }
 
+/** Forget every recent phrase. */
+export function clearRecent() {
+    try {
+        globalThis.localStorage?.removeItem(KEYS.recent);
+    } catch {
+        // storage blocked; there's nothing saved to remove
+    }
+}
+
 // Drop expired entries and cap the list.
 function prune(entries, now) {
     const cutoff = now - RECENT_WINDOW_MS;

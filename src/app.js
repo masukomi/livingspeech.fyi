@@ -173,6 +173,7 @@ function showSettings(show) {
     if (show) {
         refreshSettings();
     } else {
+        refreshRecent(); // phrases may have been deleted in settings
         autosize();
     }
 }

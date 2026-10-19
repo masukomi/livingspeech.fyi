@@ -20,6 +20,7 @@
     --field-border: rgba(0, 0, 0, 0.14);
     --hover: rgba(0, 0, 0, 0.06);
     --accent: #0a84ff;
+    --danger: #d70015;
     --warn-bg: rgba(255, 159, 10, 0.16);
     --warn-text: #8a5300;
     --info-bg: rgba(10, 132, 255, 0.12);
@@ -285,6 +286,26 @@ html, body {
     cursor: pointer;
 }
 .button:active { opacity: 0.8; }
+
+/* Destructive actions. This red keeps white text above 4.5:1 contrast. */
+.button-danger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+    background: var(--danger);
+}
+.button-danger svg {
+    flex: none;
+    width: 1.2em;
+    height: 1.2em;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
 
 .settings-footer {
     display: flex;

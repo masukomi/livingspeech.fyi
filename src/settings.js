@@ -1,5 +1,5 @@
 import * as speech from "./speech.js";
-import {loadSettings, saveSettings} from "./store.js";
+import {clearRecent, loadSettings, saveSettings} from "./store.js";
 
 // Text size is a percentage of the browser's default text size. There's
 // deliberately no maximum: low vision users may need very large text.
@@ -136,4 +136,14 @@ export function initSettings({onTextSize, onPreview}) {
     });
 
     document.getElementById("preview").addEventListener("click", onPreview);
+
+    // Forget every recent phrase. The main view rebuilds its list on return.
+    const deleteBtn = document.getElementById("delete-saved");
+    const deleteLabel = deleteBtn.querySelector("span");
+    deleteBtn.addEventListener("click", () => {
+        if (!confirm("Delete all of your recent phrases? This can't be undone.")) return;
+        clearRecent();
+        deleteLabel.textContent = "Saved Text Deleted";
+        setTimeout(() => { deleteLabel.textContent = "Delete Saved Text"; }, 2500);
+    });
 }
