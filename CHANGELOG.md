@@ -1,3 +1,8 @@
+# v1.3.0
+
+## [added]
+- a fourth quick button
+
 # v1.2.2
 
 ## [fixed]
