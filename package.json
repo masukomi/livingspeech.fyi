@@ -1,7 +1,7 @@
 {
   "name": "livingspeech-pwa",
   "private": true,
-  "version": "1.2.1",
+  "version": "1.2.2",
   "type": "module",
   "description": "LivingSpeech as a progressive web app: type, and your device speaks it.",
   "license": "GPL-3.0-or-later",
