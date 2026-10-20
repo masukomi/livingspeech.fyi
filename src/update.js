@@ -8,6 +8,8 @@ const RECHECK_MS = 60_000;
 
 let registration = null;
 let lastCheck = 0;
+// A new version has taken over; the page must reload to run it.
+let updated = false;
 
 /**
  * Register the service worker and check for a newer version.
@@ -21,7 +23,10 @@ export async function initUpdates(onUpdated) {
     // then is the install, not an update.
     let hadController = !!navigator.serviceWorker.controller;
     navigator.serviceWorker.addEventListener("controllerchange", () => {
-        if (hadController) onUpdated();
+        if (hadController) {
+            updated = true;
+            onUpdated();
+        }
         hadController = true;
     });
 
@@ -50,14 +55,34 @@ async function check() {
     }
 }
 
+// Settles once a new worker has taken over, or failed to install.
+function takeover(worker) {
+    return new Promise((resolve) => {
+        navigator.serviceWorker.addEventListener("controllerchange", resolve, {once: true});
+        worker.addEventListener("statechange", () => {
+            if (worker.state === "redundant") resolve();
+        });
+    });
+}
+
 /**
- * Check now, for the "Check for updates" button.
+ * Whether a new version has taken over since the page loaded. The page is
+ * still running the old version until it reloads.
+ */
+export function updateReady() {
+    return updated;
+}
+
+/**
+ * Check now, for the "Check for updates" button. If a new version is found,
+ * waits for it to install and take over, so updateReady() answers afterwards.
  * @returns {Promise<string>} a message for the user
  */
 export async function checkNow() {
     if (!registration) return "Updates aren't available in this browser.";
     if (!navigator.onLine) return "You're offline. Try again when you're connected.";
     await check();
-    if (registration.installing || registration.waiting) return "Updating…";
-    return "You have the latest version.";
+    const worker = registration.installing || registration.waiting;
+    if (worker) await takeover(worker);
+    return updated ? "Updating…" : "You have the latest version.";
 }

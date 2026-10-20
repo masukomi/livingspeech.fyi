@@ -2,7 +2,7 @@ import * as pronounce from "./pronounce.js";
 import * as speech from "./speech.js";
 import {DEFAULT_TEXT_SIZE, initSettings, refreshSettings, showError} from "./settings.js";
 import {addRecent, listRecent, loadSettings} from "./store.js";
-import {checkNow, initUpdates} from "./update.js";
+import {checkNow, initUpdates, updateReady} from "./update.js";
 import {VERSION} from "./version.js";
 
 const PREVIEW_TEXT = "Hello! This is how I sound.";
@@ -230,6 +230,8 @@ checkBtn.addEventListener("click", async () => {
     checkBtn.disabled = true;
     checkBtn.textContent = "Checking…";
     checkBtn.textContent = await checkNow();
+    // The new version is installed but this page is still the old one.
+    if (updateReady()) return location.reload();
     setTimeout(() => {
         checkBtn.textContent = "Check for updates";
         checkBtn.disabled = false;
