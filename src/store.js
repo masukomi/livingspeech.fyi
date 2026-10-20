@@ -38,7 +38,7 @@ function writeJSON(key, value) {
  * @property {string[]} quickButtons  labels of the quick buttons above the recent list; blank hides one
  */
 
-export const DEFAULT_QUICK_BUTTONS = ["No", "Maybe", "Yes"];
+export const DEFAULT_QUICK_BUTTONS = ["No", "Maybe", "Don't know", "Yes"];
 
 /** @returns {Settings} */
 export function loadSettings() {

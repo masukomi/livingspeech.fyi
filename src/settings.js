@@ -9,7 +9,7 @@ const MIN_TEXT_SIZE = 50;
 const voiceSel = document.getElementById("voice");
 const sizeInput = document.getElementById("text-size");
 const pronunciationsInput = document.getElementById("pronunciations");
-const quickButtonInputs = [1, 2, 3].map((n) => document.getElementById(`quick-button-${n}`));
+const quickButtonInputs = [1, 2, 3, 4].map((n) => document.getElementById(`quick-button-${n}`));
 const errorBox = document.getElementById("settings-error");
 const infoDialog = document.getElementById("voice-info-dialog");
 const THEMES = ["light", "dark", "system"];
