@@ -1,3 +1,8 @@
+# v1.2.2
+
+## [fixed]
+- check for updates reloads once a new version is ready
+
 # v1.2.1
 
 ## [fixed]
