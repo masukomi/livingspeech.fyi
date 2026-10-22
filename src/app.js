@@ -15,6 +15,15 @@ const quickButtons = document.getElementById("quick-buttons");
 const banner = document.getElementById("banner");
 const updateBanner = document.getElementById("update-banner");
 const speakToggle = document.getElementById("speak-toggle");
+const voiceWarning = document.getElementById("voice-warning");
+
+// On Android the system default voice often never starts speaking (the
+// utterance just times out), so until a voice is picked, say so.
+const isAndroid = /android/i.test(navigator.userAgentData?.platform ?? navigator.userAgent);
+
+function refreshVoiceWarning() {
+    voiceWarning.hidden = !(isAndroid && !loadSettings().voiceURI);
+}
 
 let speaking = false;
 
@@ -193,6 +202,7 @@ function showSettings(show) {
     } else {
         refreshRecent(); // phrases may have been deleted in settings
         refreshQuickButtons(); // labels may have changed in settings
+        refreshVoiceWarning(); // a voice may have been chosen in settings
         autosize();
     }
 }
@@ -254,6 +264,7 @@ document.getElementById("version").textContent = `Version ${VERSION}`;
 applyTextSize(loadSettings().textSize || DEFAULT_TEXT_SIZE);
 refreshQuickButtons();
 refreshRecent();
+refreshVoiceWarning();
 if (!speech.supported) showBanner(UNSUPPORTED);
 // Don't pop up the keyboard on phones; it would cover the recent list.
 if (!matchMedia("(pointer: coarse)").matches) input.focus();

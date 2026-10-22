@@ -42,6 +42,8 @@
                   enterkeyhint="send" aria-label="Text to speak"></textarea>
         <div class="speak-row">
             <p class="hint">
+                <!-- Android's default voice often stalls until a specific voice is picked. -->
+                <span id="voice-warning" class="hint-warning" hidden>⚠️ You must choose a voice under settings.</span>
                 <span class="hint-keyboard">Return to speak · Shift+Return for a new line</span>
                 <span class="hint-touch">Tap Return to speak</span>
             </p>

@@ -254,6 +254,7 @@ html, body {
 #speak-toggle .icon-stop,
 #speak-toggle.speaking .icon-play { display: none; }
 #speak-toggle.speaking .icon-stop { display: block; }
+.hint-warning { display: block; color: var(--warn-text); }
 .hint-touch { display: none; }
 @media (pointer: coarse) {
     .hint-keyboard { display: none; }
