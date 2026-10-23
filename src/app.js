@@ -1,7 +1,7 @@
 import * as pronounce from "./pronounce.js";
 import * as speech from "./speech.js";
 import {DEFAULT_TEXT_SIZE, initSettings, refreshSettings, showError} from "./settings.js";
-import {addRecent, listRecent, loadSettings} from "./store.js";
+import {addRecent, listRecent, loadSettings, saveSettings} from "./store.js";
 import {checkNow, initUpdates, updateReady} from "./update.js";
 import {VERSION} from "./version.js";
 
@@ -233,6 +233,18 @@ installDialog.addEventListener("click", (e) => {
     if (e.target === installDialog) installDialog.close();
 });
 
+// --- first run ---
+
+// A short welcome the first time the app is opened. Closing it, however
+// that happens (the button, Escape, a tap outside), means it's never shown again.
+const welcomeDialog = document.getElementById("welcome-dialog");
+welcomeDialog.addEventListener("click", (e) => {
+    if (e.target === welcomeDialog) welcomeDialog.close();
+});
+welcomeDialog.addEventListener("close", () => saveSettings({welcomed: true}));
+// Following the link closes the dialog too, so it doesn't come back on return.
+welcomeDialog.querySelector("a").addEventListener("click", () => saveSettings({welcomed: true}));
+
 // --- updates ---
 
 const checkBtn = document.getElementById("check-updates");
@@ -268,4 +280,5 @@ refreshVoiceWarning();
 if (!speech.supported) showBanner(UNSUPPORTED);
 // Don't pop up the keyboard on phones; it would cover the recent list.
 if (!matchMedia("(pointer: coarse)").matches) input.focus();
+if (!loadSettings().welcomed) welcomeDialog.showModal();
 void initUpdates(onUpdated);

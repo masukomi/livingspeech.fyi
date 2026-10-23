@@ -602,6 +602,7 @@ dialog p, .doc p { margin: 0 0 0.5rem; }
 dialog ol, .doc ol { margin: 0 0 0.5rem; padding-left: 1.3rem; }
 dialog li, .doc li { margin-bottom: 0.35rem; }
 dialog .note { color: var(--text-secondary); font-size: 0.875rem; }
+dialog a { color: var(--accent); font-weight: 600; }
 
 /* The docs page: the dialog prose above, laid out as a page of its own. */
 .doc {

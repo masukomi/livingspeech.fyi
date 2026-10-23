@@ -36,6 +36,7 @@ function writeJSON(key, value) {
  * @property {string} pronunciations  one "word -> replacement" per line (see pronounce.js)
  * @property {"light"|"dark"|"system"} theme  the color scheme; "system" follows the device
  * @property {string[]} quickButtons  labels of the quick buttons above the recent list; blank hides one
+ * @property {boolean} welcomed  the first-run welcome dialog has been closed, so it's never shown again
  */
 
 export const DEFAULT_QUICK_BUTTONS = ["No", "Maybe", "Don't know", "Yes"];
@@ -44,6 +45,7 @@ export const DEFAULT_QUICK_BUTTONS = ["No", "Maybe", "Don't know", "Yes"];
 export function loadSettings() {
     return {
         voiceURI: "", textSize: 0, pronunciations: "", theme: "system", quickButtons: DEFAULT_QUICK_BUTTONS,
+        welcomed: false,
         ...readJSON(KEYS.settings, {}),
     };
 }

@@ -143,6 +143,20 @@
     </footer>
 </div>
 
+<!-- Shown once, the first time the app is opened; app.js remembers that it was closed. -->
+<dialog id="welcome-dialog" aria-labelledby="welcome-title">
+    <form method="dialog">
+        <h2 id="welcome-title">Welcome to LivingSpeech</h2>
+        <p>LivingSpeech helps non-verbal and semi-verbal people, to communicate. Use it to
+            order a coffee, answer a question, or join a conversation.</p>
+        <p><b>Choose a voice. Start typing. Hit play.</b></p>
+        <p><a href="docs/">Learn more</a></p>
+        <div class="dialog-actions">
+            <button class="button" value="close" autofocus>Get started</button>
+        </div>
+    </form>
+</dialog>
+
 <dialog id="voice-info-dialog" aria-labelledby="voice-info-title">
     <form method="dialog">
         <h2 id="voice-info-title">Getting better voices</h2>

@@ -64,6 +64,21 @@ npm run build    # write a deployable copy to dist/
 npm run preview  # build, then serve dist/ at http://localhost:8000
 ```
 
+To re-test the modal dialog that only displays the first time you load the app
+run the following in your browser's console.
+
+```javascript
+const s = JSON.parse(localStorage.getItem("livingspeech.settings") || "{}"); 
+delete s.welcomed; 
+localStorage.setItem("livingspeech.settings", JSON.stringify(s));
+```
+
+To wipe every setting, including the voice and quick buttons, and start clean, run this:
+
+```javascript
+localStorage.removeItem("livingspeech.settings");
+```
+
 ### Deploying
 
 Run `npm run build` and upload the contents of `dist/` to the web root.
