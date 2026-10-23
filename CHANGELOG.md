@@ -1,3 +1,11 @@
+# v1.4.0
+
+## [added]
+- warn Android users to choose a voice
+- an About page at /docs
+- a welcome dialog on first run
+- warn Firefox-on-Mac users about the pop
+
 # v1.3.0
 
 ## [added]
