@@ -25,6 +25,19 @@ function refreshVoiceWarning() {
     voiceWarning.hidden = !(isAndroid && !loadSettings().voiceURI);
 }
 
+// Firefox on macOS 27 plays a loud pop at the end of every utterance
+// (https://bugzilla.mozilla.org/show_bug.cgi?id=2076248). Nothing the page
+// does can stop it, so say so and point at browsers that work. The bug is in
+// the engine, so this matches Gecko itself rather than the Firefox name, which
+// covers forks like Waterfox, LibreWolf, Floorp, Zen, and SeaMonkey. Chrome and
+// Safari say "like Gecko" but never "Gecko/". Privacy-minded forks report a
+// Windows user agent while leaving navigator.platform honest, so that's
+// checked first. (Full fingerprinting resistance spoofs both; then there's
+// nothing to go on, and the banner stays hidden.)
+const isGecko = /\bGecko\/\d/.test(navigator.userAgent);
+const isMac = /^mac/i.test(navigator.platform) || /macintosh/i.test(navigator.userAgent);
+const isFirefoxOnMac = isGecko && isMac;
+
 let speaking = false;
 
 // While anything is being spoken, the play button by the text box becomes a stop button.
@@ -277,6 +290,7 @@ applyTextSize(loadSettings().textSize || DEFAULT_TEXT_SIZE);
 refreshQuickButtons();
 refreshRecent();
 refreshVoiceWarning();
+document.getElementById("firefox-banner").hidden = !isFirefoxOnMac;
 if (!speech.supported) showBanner(UNSUPPORTED);
 // Don't pop up the keyboard on phones; it would cover the recent list.
 if (!matchMedia("(pointer: coarse)").matches) input.focus();

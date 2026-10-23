@@ -36,6 +36,10 @@
         </header>
 
         <div id="banner" class="banner" hidden></div>
+        <!-- Firefox on macOS 27 plays a loud pop after each utterance (Mozilla bug 2076248). app.js shows this there. -->
+        <div id="firefox-banner" class="banner" hidden>Firefox on a Mac adds a loud pop after speaking.
+          That's a bug in Firefox, not something
+            LivingSpeech can fix. Safari and Chrome work fine.</div>
         <button id="update-banner" class="banner banner-action" hidden>A new version is ready. Tap to update.</button>
 
         <textarea id="input" rows="1" placeholder="Type to speak" spellcheck="true" autocapitalize="sentences"
