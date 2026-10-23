@@ -594,13 +594,26 @@ dialog {
     user-select: text;
 }
 dialog::backdrop { background: rgba(0, 0, 0, 0.4); }
-dialog h2 { margin: 0 0 0.5rem; font-size: 1.25rem; line-height: 1.2; color: var(--accent-color); }
-dialog h3 { margin: 1rem 0 0.3rem; font-size: 1rem; }
-dialog p, dialog li { font-size: 0.95rem; line-height: 1.45; }
-dialog p { margin: 0 0 0.5rem; }
-dialog ol { margin: 0 0 0.5rem; padding-left: 1.3rem; }
-dialog li { margin-bottom: 0.35rem; }
+/* Prose, in the dialogs and on the docs page (docs/index.html). */
+dialog h2, .doc h2 { margin: 0 0 0.5rem; font-size: 1.25rem; line-height: 1.2; color: var(--accent-color); }
+dialog h3, .doc h3 { margin: 1rem 0 0.3rem; font-size: 1rem; }
+dialog p, dialog li, .doc p, .doc li { font-size: 0.95rem; line-height: 1.45; }
+dialog p, .doc p { margin: 0 0 0.5rem; }
+dialog ol, .doc ol { margin: 0 0 0.5rem; padding-left: 1.3rem; }
+dialog li, .doc li { margin-bottom: 0.35rem; }
 dialog .note { color: var(--text-secondary); font-size: 0.875rem; }
+
+/* The docs page: the dialog prose above, laid out as a page of its own. */
+.doc {
+    padding-left: max(min(0.75rem, 12px), env(safe-area-inset-left));
+    padding-right: max(min(0.75rem, 12px), env(safe-area-inset-right));
+    -webkit-user-select: text;
+    user-select: text;
+}
+.doc h2 { margin-top: 1.5rem; }
+.doc .bar + h2 { margin-top: 0.25rem; }
+.doc a { color: var(--accent); }
+.doc a.icon-btn { text-decoration: none; }
 .dialog-actions { margin-top: 0.75rem; }
 
 /* A large, thumb-friendly close button in the top right corner. Sticky, so

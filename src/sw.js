@@ -42,14 +42,17 @@ self.addEventListener("fetch", (event) => {
     event.respondWith(DEV ? networkFirst(request) : cacheFirst(request));
 });
 
-// The ASSETS entry a request is for, or null for anything else. Any page in
-// scope is the app itself, as is the scope root however it's requested:
-// Chrome fetches start_url directly when it checks whether the app installs.
+// The ASSETS entry a request is for, or null for anything else. A page the app
+// ships (docs/) is served as itself; any other page in scope is the app, as is
+// the scope root however it's requested: Chrome fetches start_url directly
+// when it checks whether the app installs.
 function assetKey(request) {
     const scopePath = new URL(self.registration.scope).pathname;
-    const path = new URL(request.url).pathname.slice(scopePath.length);
+    let path = new URL(request.url).pathname.slice(scopePath.length);
+    if (path.endsWith("/")) path += "index.html";
+    if (ASSETS.includes(path)) return path;
     if (request.mode === "navigate" || path === "" || path === "index.html") return "./";
-    return ASSETS.includes(path) ? path : null;
+    return null;
 }
 
 // The cache holds one copy of each file, so a response's Vary header (the

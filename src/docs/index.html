@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+    <title>About LivingSpeech</title>
+    <meta name="description" content="LivingSpeech is a free, private app that speaks what you type, for people who can't speak or can't always speak."/>
+    <meta name="theme-color" content="#ffe4cc" media="(prefers-color-scheme: light)"/>
+    <meta name="theme-color" content="#1a1007" media="(prefers-color-scheme: dark)"/>
+    <link rel="icon" href="../icons/favicon.svg" type="image/svg+xml"/>
+    <link rel="apple-touch-icon" href="../icons/apple-touch-icon.png"/>
+    <link rel="stylesheet" href="../style.css"/>
+    <!-- Apply the color scheme chosen in the app before the first paint, so the page doesn't flash. -->
+    <script>
+        try {
+            var theme = JSON.parse(localStorage.getItem("livingspeech.settings") || "{}").theme;
+            if (theme === "light" || theme === "dark") document.documentElement.dataset.theme = theme;
+        } catch (e) {}
+    </script>
+</head>
+<body>
+<div id="panel" class="doc">
+    <header class="bar">
+        <a href="../" class="icon-btn" title="Open LivingSpeech" aria-label="Open LivingSpeech">
+            <svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>
+        </a>
+        <span class="title">About LivingSpeech</span>
+    </header>
+
+    <h2>What it is</h2>
+    <p>LivingSpeech helps people who can't speak, or can't always speak to communicate. Use it to order a coffee, answer a question, or join a conversation.</p>
+
+    <h2>How it works</h2>
+    <ol>
+        <li>Open <a href="../">LivingSpeech.fyi</a></li>
+        <li>Type what you want to say.</li>
+        <li>Press Return, or tap the play button. Your device speaks it.</li>
+    </ol>
+    <p>Phrases you've said recently stay on screen so you can say them again with one tap. Four quick
+        buttons, which you can change, speak common answers like "Yes" and "No" right away.</p>
+
+    <h2>Put it on your home screen</h2>
+    <p>LivingSpeech is a web page that works like an app. Add it to your home screen and it opens full
+      screen with one tap, <em>works without an internet connection</em>, and keeps itself up to date
+      when it has one. There's nothing to buy and no app store account needed.</p>
+
+    <h3>iPhone and iPad</h3>
+    <ol>
+        <li>Open <b>LivingSpeech.fyi</b> in Safari.</li>
+        <li>Tap the <b>Share</b> button
+            <svg class="inline-icon" viewBox="0 0 24 24" role="img" aria-label="(a square with an arrow pointing up)"><path d="M12 3v12M8 7l4-4 4 4M7 11H5v10h14V11h-2"/></svg>.
+            In Safari it's at the bottom of the screen, or at the top on iPad.
+            You may need to tap <b>⋯</b> first.</li>
+        <li>Scroll down and tap <b>Add to Home Screen</b>.</li>
+        <li>Tap <b>Add</b>.</li>
+    </ol>
+
+    <h3>Android</h3>
+    <ol>
+        <li>Open <b>LivingSpeech.fyi</b> in Chrome.</li>
+        <li>Tap the menu button <b>⋮</b> in the top right corner.</li>
+        <li>Tap <b>Add to Home screen</b> or <b>Install app</b>, then <b>Install</b>.</li>
+        <li>Open the app, go to <b>Settings</b>, and choose a voice. On Android the default voice often
+            doesn't work until you pick one.</li>
+    </ol>
+
+    <h2>It's free</h2>
+    <p>LivingSpeech costs nothing. There are no ads, no subscriptions, and no "premium" version.
+      I wrote it, because I needed it.
+      It's <a href="https://github.com/masukomi/livingspeech.fyi" target="_blank" rel="noopener">free and open
+        source software</a>, so anyone can see how it works, or make their own copy.</p>
+
+    <h2>It's private</h2>
+    <p>Everything you type stays on your device. It is never sent to us, and we can never see it.</p>
+    <p>There's no account to sign up for,  no tracking. The whole app runs on your own device, and
+      the voices come from your device too. The only  copy of what you've said is the recent list on
+      your screen, which you can clear whenever you like.</p>
+
+
+    <footer class="page-footer">
+        <a href="../">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg>
+            Open LivingSpeech
+        </a>
+        <a href="https://github.com/masukomi/livingspeech.fyi" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/></svg>
+            Source Code
+        </a>
+    </footer>
+</div>
+</body>
+</html>

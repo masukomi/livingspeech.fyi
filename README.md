@@ -86,6 +86,7 @@ Host requirements:
 | File | Purpose |
 |---|---|
 | `src/index.html`, `src/style.css` | The two views (Speak and Settings) and the voice info dialog |
+| `src/docs/index.html` | The About page at `/docs/`: what the app is, installing it, free, private |
 | `src/app.js` | Main view: input, speaking, recent list, update handling |
 | `src/settings.js` | Settings view: voice list, text size, pronunciations |
 | `src/speech.js` | Wrapper around `speechSynthesis`; splits long text into sentence-sized pieces |
