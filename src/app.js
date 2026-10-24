@@ -57,12 +57,23 @@ function updateSpeakToggle() {
 // --- sizing ---
 
 // Grow the text box with its content up to half the visible height, then scroll.
-function autosize() {
+//
+// Measuring the content means collapsing the box first, and iOS Safari answers
+// any size change of the focused box, with the keyboard up, by scrolling the
+// page (often all the way down, out from under the box). So the box is only
+// collapsed when text may have been removed (growth shows in scrollHeight as
+// is), styles are only written when they change, and the page is put back
+// where it was if the browser moved it anyway.
+function autosize({shrink = true} = {}) {
     const maxH = Math.floor((window.visualViewport?.height ?? window.innerHeight) * 0.5);
-    input.style.height = "auto";
+    const {scrollX, scrollY} = window;
+    if (shrink) input.style.height = "auto";
     const needed = input.scrollHeight + 2; // + borders
-    input.style.height = `${Math.min(needed, maxH)}px`;
-    input.style.overflowY = needed > maxH ? "auto" : "hidden";
+    const height = `${Math.min(needed, maxH)}px`;
+    const overflowY = needed > maxH ? "auto" : "hidden";
+    if (input.style.height !== height) input.style.height = height;
+    if (input.style.overflowY !== overflowY) input.style.overflowY = overflowY;
+    if (window.scrollX !== scrollX || window.scrollY !== scrollY) window.scrollTo(scrollX, scrollY);
 }
 
 // Everything in the stylesheet is sized in rem, so the root font size scales
@@ -187,8 +198,11 @@ function speakInput() {
     speak(text);
 }
 
+// Typing only adds text, so the box needs no collapsing to measure; see autosize.
+let lastLength = input.value.length;
 input.addEventListener("input", () => {
-    autosize();
+    autosize({shrink: input.value.length <= lastLength});
+    lastLength = input.value.length;
     updateSpeakToggle();
 });
 input.addEventListener("keydown", (e) => {
