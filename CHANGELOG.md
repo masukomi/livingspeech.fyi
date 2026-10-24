@@ -1,3 +1,8 @@
+# v1.4.1
+
+## [fixed]
+- undesired scrolling when typing on mobile
+
 # v1.4.0
 
 ## [added]
