@@ -2,7 +2,7 @@ import {beforeEach, test} from "node:test";
 import assert from "node:assert/strict";
 import {addRecent, clearRecent, listRecent, loadSettings, RECENT_WINDOW_MS, saveSettings} from "../src/store.js";
 
-const DEFAULTS = {voiceURI: "", textSize: 0, pronunciations: "", theme: "system", quickButtons: ["No", "Maybe", "Don't know", "Yes"], welcomed: false};
+const DEFAULTS = {voiceURI: "", textSize: 0, pronunciations: "", theme: "system", quickButtons: ["No", "Maybe", "Don't know", "Yes", "", ""], welcomed: false};
 
 beforeEach(() => {
     const data = new Map();

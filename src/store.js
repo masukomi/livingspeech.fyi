@@ -39,7 +39,7 @@ function writeJSON(key, value) {
  * @property {boolean} welcomed  the first-run welcome dialog has been closed, so it's never shown again
  */
 
-export const DEFAULT_QUICK_BUTTONS = ["No", "Maybe", "Don't know", "Yes"];
+export const DEFAULT_QUICK_BUTTONS = ["No", "Maybe", "Don't know", "Yes", "", ""];
 
 /** @returns {Settings} */
 export function loadSettings() {
