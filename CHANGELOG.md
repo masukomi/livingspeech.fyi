@@ -1,3 +1,9 @@
+# v1.5.0
+
+## [change]
+- two more quick buttons, blank by default
+- Icon is now orange to match light theme
+
 # v1.4.1
 
 ## [fixed]
