@@ -58,14 +58,22 @@ function updateSpeakToggle() {
 
 // Grow the text box with its content up to half the visible height, then scroll.
 //
-// Measuring the content means collapsing the box first, and iOS Safari answers
-// any size change of the focused box, with the keyboard up, by scrolling the
-// page (often all the way down, out from under the box). So the box is only
-// collapsed when text may have been removed (growth shows in scrollHeight as
-// is), styles are only written when they change, and the page is put back
-// where it was if the browser moved it anyway.
+// iOS Safari answers any size change of the focused box, with the keyboard up,
+// by scrolling the page (often all the way down, out from under the box). So
+// where the browser can size the box itself (field-sizing, in style.css) this
+// only caps the height, and the box is never touched while typing. Elsewhere,
+// measuring the content means collapsing the box first: that's only done when
+// text may have been removed (growth shows in scrollHeight as is), styles are
+// only written when they change, and the page is put back where it was if the
+// browser moved it anyway.
+const nativeSizing = CSS.supports("field-sizing", "content");
 function autosize({shrink = true} = {}) {
     const maxH = Math.floor((window.visualViewport?.height ?? window.innerHeight) * 0.5);
+    if (nativeSizing) {
+        const maxHeight = `${maxH}px`;
+        if (input.style.maxHeight !== maxHeight) input.style.maxHeight = maxHeight;
+        return;
+    }
     const {scrollX, scrollY} = window;
     if (shrink) input.style.height = "auto";
     const needed = input.scrollHeight + 2; // + borders
@@ -201,7 +209,7 @@ function speakInput() {
 // Typing only adds text, so the box needs no collapsing to measure; see autosize.
 let lastLength = input.value.length;
 input.addEventListener("input", () => {
-    autosize({shrink: input.value.length <= lastLength});
+    if (!nativeSizing) autosize({shrink: input.value.length <= lastLength});
     lastLength = input.value.length;
     updateSpeakToggle();
 });

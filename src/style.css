@@ -228,6 +228,16 @@ html, body {
     -webkit-user-select: text;
     user-select: text;
 }
+/* Where the browser can size the box to its text itself (Chrome 123, Safari 26.2),
+   let it: app.js then only caps the height, and never resizes the box while
+   typing, which iOS Safari answers by scrolling the page. Elsewhere app.js
+   sizes it. */
+@supports (field-sizing: content) {
+    #input {
+        field-sizing: content;
+        overflow-y: auto;
+    }
+}
 #input:focus { border-color: var(--accent); box-shadow: var(--edge-highlight), 0 0 0 0.2rem var(--accent-color-alpha); }
 #input::placeholder { color: var(--text-muted); }
 
