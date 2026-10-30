@@ -1,3 +1,8 @@
+# v1.5.1
+
+## [fixed]
+- let the browser size the text box while typing
+
 # v1.5.0
 
 ## [change]
